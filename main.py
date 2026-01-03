@@ -1,10 +1,10 @@
 import json
 from pathlib import Path
 
-from story_parser import parse_story_to_scenes
-from tts import generate_scene_audios
-from image_gen import generate_scene_images
-from video_builder import build_video
+from module.story_parser import parse_story_to_scenes
+from module.tts import generate_scene_audios
+from module.image_gen import generate_scene_images
+from module.video_builder import build_video
 
 
 # ---------- PATHS ----------
