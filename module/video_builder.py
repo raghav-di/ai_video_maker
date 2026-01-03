@@ -12,7 +12,7 @@ RESULT_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_VIDEO = RESULT_DIR / "final_video.mp4"
 
 FPS = 30
-RESOLUTION = "1280x720"   # change to 1920x1080 later if needed
+RESOLUTION = "1080x1920"   # change to 1920x1080 later if needed
 TRANSITION_DURATION = 0.5  # seconds
 
 
