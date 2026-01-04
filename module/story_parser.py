@@ -69,18 +69,28 @@ def parse_story_to_scenes(story_text: str) -> List[Dict]:
     scenes = [
   {
     "scene_id": 1,
-    "image_prompt_en": "Early morning sunlight in a quiet Indian village street, soft golden light, cinematic, realistic",
-    "audio_script_hi": "सुबह की हल्की धूप में एक छोटा लड़का अपने घर से बाहर निकला।"
+    "image_prompt_en": "A government forest office with congratulatory atmosphere, official papers on desk, cinematic lighting, realistic",
+    "audio_script_hi": "बधाई हो! आपके पिता फॉरेस्ट गार्ड बन गए हैं और आपकी पोस्टिंग छत्तीसगढ़ के एक घने जंगल में हुई है।"
   },
   {
     "scene_id": 2,
-    "image_prompt_en": "Empty peaceful street with birds flying and trees around, calm morning atmosphere, cinematic",
-    "audio_script_hi": "सड़क पर शांति थी और पक्षियों की आवाज़ गूंज रही थी।"
+    "image_prompt_en": "Dense dark jungle in Chhattisgarh, thick fog, twisted trees, eerie atmosphere, cinematic, realistic",
+    "audio_script_hi": "लेकिन यह जंगल कोई आम जंगल नहीं है। लोग इसे श्रापित मानते हैं और कहा जाता है कि यह जंगल लोगों का शिकार करता है।"
   },
   {
     "scene_id": 3,
-    "image_prompt_en": "A young boy sitting under a tree looking up at the sky with a gentle smile, serene, cinematic, realistic",
-    "audio_script_hi": "थोड़ी दूर चलने के बाद उसने एक पेड़ के नीचे बैठकर आसमान की ओर देखा और मुस्कुराया।"
+    "image_prompt_en": "A small isolated house in the middle of a haunted jungle, night time, dim lights inside the house, cinematic horror mood",
+    "audio_script_hi": "आपका घर इस जंगल के लगभग बीच में है, और अब आपकी सुरक्षा केवल कुछ नियमों पर निर्भर करती है।"
+  },
+  {
+    "scene_id": 4,
+    "image_prompt_en": "A warning board in a dark forest with mysterious symbols, cinematic horror style",
+    "audio_script_hi": "पहला नियम: सूर्यास्त के बाद घर से बाहर कभी न निकलें। दूसरा नियम: अगर जंगल से कोई आवाज़ बुलाए, तो जवाब न दें। तीसरा नियम: रात में खिड़कियों और दरवाज़ों को बंद रखें। चौथा नियम: जंगल में कभी भी अकेले न जाएँ।"
+  },
+  {
+    "scene_id": 5,
+    "image_prompt_en": "Morning light entering a forest clearing, slightly hopeful yet mysterious atmosphere, cinematic",
+    "audio_script_hi": "आशा करते हैं कि आपको इस जंगल में रहना पसंद आएगा।"
   }
 ]
 

@@ -43,8 +43,8 @@ def generate_scene_audios(
         tts.tts_to_file(
             text=text,
             file_path=str(out_path),
-            speaker_wav=speaker_wav,
-            language=language
+            speaker_wav="../assets/audio/speaker.wav",
+            language='hi'
         )
 
         # Measure duration
