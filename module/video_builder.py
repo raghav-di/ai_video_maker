@@ -12,7 +12,7 @@ RESULT_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_VIDEO = RESULT_DIR / "final_video.mp4"
 
 NARRATION_AUDIO = AUDIO_DIR / "full_story.wav"
-AMBIENCE_AUDIO = AUDIO_DIR / "ambience_forest.wav"
+AMBIENCE_AUDIO = "ai_video_maker/assets/audio/ambience_forest.wav"
 
 # ---------- VIDEO SETTINGS ----------
 FPS = 30
