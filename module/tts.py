@@ -5,6 +5,7 @@ import librosa
 from pathlib import Path
 from typing import List, Dict, Tuple
 from TTS.api import TTS
+import numpy as np
 
 # ---------- CONFIG ----------
 AUDIO_DIR = Path("assets/audio")
@@ -66,16 +67,16 @@ def generate_scene_audios(
 
 # ---------- HELPER ----------
 def _concatenate_audios(audio_paths: List[Path], output_path: Path):
-    combined_audio = []
+    audios = []
     sample_rate = None
 
     for path in audio_paths:
         audio, sr = sf.read(path)
         if sample_rate is None:
             sample_rate = sr
-        combined_audio.append(audio)
+        audios.append(audio)
 
-    final_audio = sum(combined_audio[1:], combined_audio[0])
+    final_audio = np.concatenate(audios, axis=0)
     sf.write(output_path, final_audio, sample_rate)
 
 
