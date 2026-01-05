@@ -43,7 +43,7 @@ def main():
 
     # 5️⃣ Build final video
     print("🎥 Building final video...")
-    build_video(scene_durations, full_audio_path)
+    build_video(scene_durations)
 
     print("✅ Pipeline completed successfully!")
 
