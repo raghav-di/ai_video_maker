@@ -14,8 +14,6 @@ AUDIO_DIR.mkdir(parents=True, exist_ok=True)
 MODEL_NAME = "tts_models/multilingual/multi-dataset/xtts_v2"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-# Load TTS model
-tts = TTS(MODEL_NAME).to(DEVICE)
 
 # ---------- CORE FUNCTION ----------
 def generate_scene_audios(
@@ -31,6 +29,9 @@ def generate_scene_audios(
         full_audio_path (str)
         scene_durations (List[float])
     """
+
+    # Load TTS model
+    tts = TTS(MODEL_NAME).to(DEVICE)
 
     scene_audio_paths = []
     scene_durations = []
@@ -56,7 +57,6 @@ def generate_scene_audios(
     # Concatenate all scene audios
     full_audio_path = AUDIO_DIR / "full_story.wav"
     _concatenate_audios(scene_audio_paths, full_audio_path)
-    transcribe_and_save(full_audio_path, "assets/metadata/full_story_stt.json")
 
     # Free GPU memory
     del tts
@@ -79,12 +79,6 @@ def _concatenate_audios(audio_paths: List[Path], output_path: Path):
     final_audio = np.concatenate(audios, axis=0)
     sf.write(output_path, final_audio, sample_rate)
 
-def transcribe_and_save(audio_path, json_path="stt_output.json"):
-    with open(audio_path, "rb") as f:
-        audio_bytes = f.read()
-    result = tts.stt(audio_bytes)           # get JSON output
-    with open(json_path, "w", encoding="utf-8") as out:
-        json.dump(result, out, ensure_ascii=False, indent=2)
 
 # ---------- CLI TEST ----------
 if __name__ == "__main__":

@@ -10,6 +10,7 @@ RESULT_DIR = Path("result")
 RESULT_DIR.mkdir(parents=True, exist_ok=True)
 
 OUTPUT_VIDEO = RESULT_DIR / "final_video.mp4"
+SUBS_PATH = "assets/metadata/subs.srt"
 
 FPS = 30
 RESOLUTION = "1080x1920"   # change to 1920x1080 later if needed
@@ -65,8 +66,20 @@ def build_video(
         f"[{len(image_files)+1}:a]volume=0.2,aloop=loop=-1:size=2e+09[amb];"
         f"[narr][amb]amix=inputs=2:duration=shortest[aout]"
     )
+    
+    subtitle_filter = (
+        f"subtitles={SUBS_PATH}:"
+        "force_style='"
+        "FontName=Arial,"
+        "FontSize=36,"
+        "PrimaryColour=&HFFFFFF&,"
+        "OutlineColour=&H000000&,"
+        "BorderStyle=1,"
+        "Outline=3,"
+        "Alignment=2'[vout]"
+    )
 
-    full_filter = ";".join(filter_parts) + ";" + filter_complex.rstrip(";") + ";" + audio_filter
+    full_filter = ";".join(filter_parts) + ";" + filter_complex.rstrip(";") + ";" + audio_filter + ";" + subtitle_filter
 
     cmd = [
         "ffmpeg", "-y",
@@ -74,7 +87,7 @@ def build_video(
         "-i", narration_audio,
         "-i", ambience_audio,
         "-filter_complex", full_filter,
-        "-map", final_video_label,
+        "-map", "[vout]",
         "-map", "[aout]",
         "-r", str(FPS),
         "-pix_fmt", "yuv420p",
