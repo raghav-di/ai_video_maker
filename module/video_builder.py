@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List
 
 
-# ---------- PATHS ----------
+# ---------- CONFIG ----------
 IMAGE_DIR = Path("assets/images")
 AUDIO_DIR = Path("assets/audio")
 RESULT_DIR = Path("result")
@@ -11,87 +11,81 @@ RESULT_DIR.mkdir(parents=True, exist_ok=True)
 
 OUTPUT_VIDEO = RESULT_DIR / "final_video.mp4"
 
-NARRATION_AUDIO = AUDIO_DIR / "full_story.wav"
-AMBIENCE_AUDIO = "ai_video_maker/assets/audio/ambience_forest.wav"
-
-
-# ---------- VIDEO SETTINGS ----------
 FPS = 30
-RESOLUTION = "1080x1920"        # YouTube Shorts (9:16)
-TRANSITION_DURATION = 0.5
+RESOLUTION = "1280x720"   # change to 1920x1080 later if needed
+TRANSITION_DURATION = 0.5  # seconds
 
 
-# ---------- CORE ----------
-def build_video(scene_durations: List[float]):
+# ---------- CORE FUNCTION ----------
+def build_video(
+    scene_durations: List[float],
+    audio_path: str
+):
+    """
+    Builds final video using images, scene durations, and narration audio.
+    """
 
     image_files = sorted(IMAGE_DIR.glob("scene_*.png"))
+
     assert len(image_files) == len(scene_durations), \
-        "Number of images and scene durations must match"
+        "Mismatch between images and scene durations"
 
+    # Create FFmpeg input arguments
     inputs = []
-    filters = []
+    filter_parts = []
+    current_time = 0.0
 
-    # ---------- IMAGE INPUTS ----------
-    for i, (img, dur) in enumerate(zip(image_files, scene_durations)):
-        inputs += [
+    for idx, (img, duration) in enumerate(zip(image_files, scene_durations)):
+        inputs.extend([
             "-loop", "1",
-            "-t", str(dur),
+            "-t", str(duration),
             "-i", str(img)
-        ]
+        ])
 
-        filters.append(
-            f"[{i}:v]scale={RESOLUTION},format=yuv420p,setsar=1[v{i}]"
+        # Scale & format
+        filter_parts.append(
+            f"[{idx}:v]scale={RESOLUTION},format=yuv420p,setsar=1[v{idx}]"
         )
 
-    # ---------- XFADE CHAIN (FIXED – LAST SCENE INCLUDED) ----------
-    xfade_out = None
-
+    # Build xfade transitions
+    filter_complex = ""
     for i in range(len(scene_durations) - 1):
-        offset = sum(scene_durations[:i + 1])
+        offset = sum(scene_durations[:i+1]) - TRANSITION_DURATION
 
         if i == 0:
-            filters.append(
+            filter_complex += (
                 f"[v0][v1]xfade=transition=fade:"
-                f"duration={TRANSITION_DURATION}:offset={offset}[vx1]"
+                f"duration={TRANSITION_DURATION}:offset={offset}[v01];"
             )
-            xfade_out = "vx1"
         else:
-            filters.append(
-                f"[{xfade_out}][v{i+1}]xfade=transition=fade:"
-                f"duration={TRANSITION_DURATION}:offset={offset}[vx{i+1}]"
+            filter_complex += (
+                f"[v{i:02d}][v{i+1}]xfade=transition=fade:"
+                f"duration={TRANSITION_DURATION}:offset={offset}[v{i+1:02d}];"
             )
-            xfade_out = f"vx{i+1}"
 
-    final_video_stream = f"[{xfade_out}]" if xfade_out else "[v0]"
-
-    # ---------- AUDIO MIX (Narration + Looping Ambience) ----------
-    audio_filter = (
-        "[5:a]volume=1.0[narr];"
-        "[6:a]volume=0.2,aloop=loop=-1:size=2e+09[amb];"
-        "[narr][amb]amix=inputs=2:duration=first[aout]"
+    final_video_label = (
+        f"[v{len(scene_durations)-1:02d}]"
+        if len(scene_durations) > 1 else "[v0]"
     )
 
-    filter_complex = (
-        ";".join(filters)
-        + f";{final_video_stream}[v]"
-        + f";{audio_filter}"
-    )
+    full_filter = ";".join(filter_parts) + ";" + filter_complex.rstrip(";")
 
     cmd = [
         "ffmpeg", "-y",
         *inputs,
-        "-i", str(NARRATION_AUDIO),
-        "-i", str(AMBIENCE_AUDIO),
-        "-filter_complex", filter_complex,
-        "-map", "[v]",
-        "-map", "[aout]",
+        "-i", audio_path,
+        "-filter_complex", full_filter,
+        "-map", final_video_label,
+        "-map", f"{len(image_files)}:a",
         "-r", str(FPS),
         "-pix_fmt", "yuv420p",
+        "-shortest",
         str(OUTPUT_VIDEO)
     ]
 
-    print("🎬 Building final video (no subtitles, with ambience)...")
+    print("🎬 Building final video...")
     subprocess.run(cmd, check=True)
+
     print(f"✅ Video saved to {OUTPUT_VIDEO}")
 
 
@@ -102,5 +96,10 @@ if __name__ == "__main__":
     with open("assets/metadata/scenes.json", "r", encoding="utf-8") as f:
         scenes = json.load(f)
 
-    durations = [scene["duration"] for scene in scenes]
-    build_video(durations)
+    durations = []
+    for scene in scenes:
+        durations.append(scene.get("duration", 5))
+
+    audio_path = AUDIO_DIR / "full_story.wav"
+
+    build_video(durations, str(audio_path))
