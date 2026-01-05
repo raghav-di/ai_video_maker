@@ -66,8 +66,8 @@ def build_video(scene_durations: List[float]):
 
     # ---------- AUDIO MIX (Narration + Looping Ambience) ----------
     audio_filter = (
-        "[a0]volume=1.0[narr];"
-        "[a1]volume=0.2,aloop=loop=-1:size=2e+09[amb];"
+        "[5:a]volume=1.0[narr];"
+        "[6:a]volume=0.2,aloop=loop=-1:size=2e+09[amb];"
         "[narr][amb]amix=inputs=2:duration=first[aout]"
     )
 
