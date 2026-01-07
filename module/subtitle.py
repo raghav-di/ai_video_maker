@@ -1,15 +1,14 @@
 from pathlib import Path
 import json
-import math
 
 
 # ---------- CONFIG ----------
 SCENES_JSON = Path("assets/metadata/scenes.json")
 OUTPUT_SRT = Path("assets/metadata/subs.srt")
 
-MAX_CHARS_PER_LINE = 26
-MAX_LINES = 2
-MIN_DURATION = 1.2  # seconds
+MAX_CHARS_PER_LINE = 16
+MAX_LINES = 1
+MIN_DURATION = 1.0  # seconds
 
 
 # ---------- HELPERS ----------

@@ -1,6 +1,7 @@
 import subprocess
 from pathlib import Path
 from typing import List
+import random
 
 
 # ---------- CONFIG ----------
@@ -28,32 +29,41 @@ def build_video(
         "Mismatch between images and scene durations"
 
     inputs = []
-    filter_parts = []
+    scene_filters = []
+    # Define some sensible focus points for variation
+    focus_points = [
+        ("iw/4", "ih/4"),       # top-left
+        ("iw/2", "ih/2"),       # center
+        ("3*iw/4", "ih/2"),     # right-center
+        ("iw/2", "3*ih/4"),     # bottom-center
+    ]
 
+    # for idx, (img, duration) in enumerate(zip(image_files, scene_durations)):
+    #     inputs.extend([
+    #         "-loop", "1",
+    #         "-t", str(duration),
+    #         "-i", str(img)
+    #     ])
+    #     frames = int(duration * FPS)
+    #     x_expr, y_expr = random.choice(focus_points)
+
+    #     scene_filters.append(
+    #         f"[{idx}:v]zoompan=z='zoom+0.001':x='{x_expr}':y='{y_expr}':"
+    #         f"d={frames}:s={RESOLUTION}:fps={FPS},format=yuv420p,setsar=1[v{idx}]"
+    #     )
     for idx, (img, duration) in enumerate(zip(image_files, scene_durations)):
         inputs.extend([
             "-loop", "1",
             "-t", str(duration),
             "-i", str(img)
         ])
-        filter_parts.append(
+        scene_filters.append(
             f"[{idx}:v]scale={RESOLUTION},format=yuv420p,setsar=1[v{idx}]"
         )
 
-    # Build xfade transitions
-    filter_complex = ""
-    for i in range(len(scene_durations) - 1):
-        offset = sum(scene_durations[:i+1])
-        if i == 0:
-            filter_complex += (
-                f"[v0][v1]xfade=transition=fade:"
-                f"duration={TRANSITION_DURATION}:offset={offset}[v01];"
-            )
-        else:
-            filter_complex += (
-                f"[v{i:02d}][v{i+1}]xfade=transition=fade:"
-                f"duration={TRANSITION_DURATION}:offset={offset}[v{i+1:02d}];"
-            )
+    # Concatenate all scenes sequentially
+    concat_inputs = "".join([f"[v{i}]" for i in range(len(scene_durations))])
+    scene_concat = f"{concat_inputs}concat=n={len(scene_durations)}:v=1:a=0[vcat]"
 
     final_video_label = (
         f"[v{len(scene_durations)-1:02d}]"
@@ -62,24 +72,27 @@ def build_video(
 
     # Audio filters: narration + ambience loop
     audio_filter = (
-        f"[{len(image_files)}:a]volume=1.0[narr];"
-        f"[{len(image_files)+1}:a]volume=0.2,aloop=loop=-1:size=2e+09[amb];"
+        f"[{len(image_files)}:0]volume=1.0[narr];"
+        f"[{len(image_files)+1}:0]volume=0.2,aloop=loop=-1:size=2e+09[amb];"
         f"[narr][amb]amix=inputs=2:duration=shortest[aout]"
     )
+
+    # Subtitles filter: attach to final video label
     
+    # Subtitles on concatenated video
     subtitle_filter = (
-        f"subtitles={SUBS_PATH}:"
-        "force_style='"
-        "FontName=Arial,"
-        "FontSize=36,"
-        "PrimaryColour=&HFFFFFF&,"
-        "OutlineColour=&H000000&,"
-        "BorderStyle=1,"
-        "Outline=3,"
-        "Alignment=2'[vout]"
+        f"[vcat]subtitles={SUBS_PATH}:"
+        "force_style='FontName=Arial,FontSize=16,PrimaryColour=&HFFFFFF&,"
+        "OutlineColour=&H000000&,BorderStyle=1,Outline=3,Alignment=10'[vout]"
     )
 
-    full_filter = ";".join(filter_parts) + ";" + filter_complex.rstrip(";") + ";" + audio_filter + ";" + subtitle_filter
+    full_filter = ";".join(scene_filters) + ";" + scene_concat + ";" + audio_filter + ";" + subtitle_filter
+
+
+    # Full filter graph
+    # full_filter = ";".join(filter_parts) + ";" + filter_complex.rstrip(";") + ";" + audio_filter + ";" + subtitle_filter
+    # full_filter = ";".join(scene_filters) + ";" + audio_filter + ";" + subtitle_filter
+
 
     cmd = [
         "ffmpeg", "-y",
