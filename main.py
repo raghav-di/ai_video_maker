@@ -27,10 +27,6 @@ def main():
     print("🧠 Parsing story into scenes...")
     scenes = parse_story_to_scenes(story_text)
 
-    # Generate subtitles
-    print("💬 Generating subtitles...")
-    generate_srt()
-
     # Generate TTS (audio-first)
     print("🎙️ Generating Hindi audio per scene...")
     full_audio_path, scene_durations = generate_scene_audios(scenes)
@@ -42,13 +38,17 @@ def main():
     with open(SCENES_FILE, "w", encoding="utf-8") as f:
         json.dump(scenes, f, ensure_ascii=False, indent=2)
 
+    # Generate subtitles
+    print("💬 Generating subtitles...")
+    generate_srt()
+
     # Generate images
     print("🎨 Generating images...")
     generate_scene_images(scenes)
 
     # Build final video
     print("🎥 Building final video...")
-    build_video(scene_durations)
+    build_video(scene_durations, full_audio_path, "ai_video_maker/assets/audio/ambience_forest.wav")
 
     print("✅ Pipeline completed successfully!")
 
