@@ -122,6 +122,6 @@ if __name__ == "__main__":
     durations = [scene.get("duration", 5) for scene in scenes]
 
     narration_audio = AUDIO_DIR / "full_story.wav"
-    ambience_audio = "ai_video_maker/assets/audio/ambience_forest.wav"
+    ambience_audio = "ai_video_maker/assets/audio/ambience.wav"
 
     build_video(durations, str(narration_audio), str(ambience_audio))
