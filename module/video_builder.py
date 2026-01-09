@@ -48,8 +48,7 @@ def build_video(
     #     x_expr, y_expr = random.choice(focus_points)
 
     #     scene_filters.append(
-    #         f"[{idx}:v]zoompan=z='zoom+0.001':x='{x_expr}':y='{y_expr}':"
-    #         f"d={frames}:s={RESOLUTION}:fps={FPS},format=yuv420p,setsar=1[v{idx}]"
+    #         f"[{idx}:v]zoompan=z='zoom+0.001':x='{x_expr}':y='{y_expr}':d={frames}:s={RESOLUTION}:fps={FPS},format=yuv420p,setsar=1[v{idx}]"
     #     )
     for idx, (img, duration) in enumerate(zip(image_files, scene_durations)):
         inputs.extend([
@@ -65,11 +64,6 @@ def build_video(
     concat_inputs = "".join([f"[v{i}]" for i in range(len(scene_durations))])
     scene_concat = f"{concat_inputs}concat=n={len(scene_durations)}:v=1:a=0[vcat]"
 
-    final_video_label = (
-        f"[v{len(scene_durations)-1:02d}]"
-        if len(scene_durations) > 1 else "[v0]"
-    )
-
     # Audio filters: narration + ambience loop
     audio_filter = (
         f"[{len(image_files)}:0]volume=1.0[narr];"
@@ -78,8 +72,6 @@ def build_video(
     )
 
     # Subtitles filter: attach to final video label
-    
-    # Subtitles on concatenated video
     subtitle_filter = (
         f"[vcat]subtitles={SUBS_PATH}:"
         "force_style='FontName=Arial,FontSize=16,PrimaryColour=&HFFFFFF&,"
@@ -87,12 +79,6 @@ def build_video(
     )
 
     full_filter = ";".join(scene_filters) + ";" + scene_concat + ";" + audio_filter + ";" + subtitle_filter
-
-
-    # Full filter graph
-    # full_filter = ";".join(filter_parts) + ";" + filter_complex.rstrip(";") + ";" + audio_filter + ";" + subtitle_filter
-    # full_filter = ";".join(scene_filters) + ";" + audio_filter + ";" + subtitle_filter
-
 
     cmd = [
         "ffmpeg", "-y",

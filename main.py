@@ -48,7 +48,7 @@ def main():
 
     # Build final video
     print("🎥 Building final video...")
-    build_video(scene_durations, full_audio_path, "ai_video_maker/assets/audio/ambience_forest.wav")
+    build_video(scene_durations, full_audio_path, "ai_video_maker/assets/audio/ambience.wav")
 
     print("✅ Pipeline completed successfully!")
 

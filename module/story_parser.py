@@ -18,8 +18,9 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 # 2. Break the story into logical visual scenes.
 # 3. For EACH scene return:
 #    - scene_id (starting from 1)
-#    - image_prompt_en (English, cinematic, detailed)
-#    - audio_script_hi (Hindi narration for that scene)
+#    - image_prompt (English, cinematic, detailed)
+#    - audio_script (Hindi narration for that scene)
+#    - subtitle_script (Hinglish subtitles for that scene)
 # 4. DO NOT estimate time.
 # 5. Return ONLY valid JSON array.
 # 6. No explanations, no markdown.
@@ -71,8 +72,9 @@ def parse_story_to_scenes(story_text: str) -> List[Dict]:
     # # Basic validation
     # for i, scene in enumerate(scenes, start=1):
     #     assert "scene_id" in scene
-    #     assert "image_prompt_en" in scene
-    #     assert "audio_script_hi" in scene
+    #     assert "image_prompt" in scene
+    #     assert "audio_script" in scene
+    #     assert "subtitle_script" in scene
     #     scene["scene_id"] = i  # enforce ordering
 
     # # Save to file
