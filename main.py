@@ -9,7 +9,7 @@ from module.subtitle import generate_srt
 
 
 # ---------- PATHS ----------
-STORY_FILE = Path("story.txt")
+STORY_FILE = Path("ai_video_maker/story.txt")
 SCENES_FILE = Path("assets/metadata/scenes.json")
 
 
@@ -43,7 +43,7 @@ def main():
 
     # Generate subtitles
     print("💬 Generating subtitles...")
-    generate_srt(scene_durations)
+    generate_srt()
 
     # Generate images
     print("🎨 Generating images...")
