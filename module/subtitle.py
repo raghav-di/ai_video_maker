@@ -6,8 +6,8 @@ import json
 SCENES_JSON = Path("assets/metadata/scenes.json")
 OUTPUT_SRT = Path("assets/metadata/subs.srt")
 
-MAX_CHARS_PER_LINE = 16
-MAX_LINES = 1
+MAX_CHARS_PER_LINE = 57
+MAX_LINES = 3
 MIN_DURATION = 1.0  # seconds
 
 
@@ -78,7 +78,6 @@ def generate_srt():
 
     OUTPUT_SRT.write_text("\n".join(srt_lines), encoding="utf-8")
     print(f"✅ Subtitles written to {OUTPUT_SRT}")
-
 
 # ---------- RUN ----------
 if __name__ == "__main__":

@@ -157,36 +157,3 @@ if __name__ == "__main__":
     story = input("Enter Hindi story:\n")
     scenes = parse_story_to_scenes(story)
     print(f"Saved {len(scenes)} scenes to assets/metadata/scenes.json")
-
-[
-  {
-    "scene_id": 1,
-    "image_prompt": "Severe blizzard hitting a quiet residential neighborhood at night, heavy snowfall, strong winds, cinematic, realistic",
-    "audio_script": "It starts quietly. Snow falls. Wind howls. And then suddenly, the power goes out.",
-    "subtitle_script": "The blizzard begins. The power goes out."
-  },
-  {
-    "scene_id": 2,
-    "image_prompt": "Dark house interior with lights turning off, cold blue moonlight entering through windows, cinematic",
-    "audio_script": "No lights. No heating. Just darkness and the sound of a blizzard outside your home.",
-    "subtitle_script": "No lights. No heat. Only cold."
-  },
-  {
-    "scene_id": 3,
-    "image_prompt": "Person standing near a window watching heavy snowfall, worried expression, dramatic lighting",
-    "audio_script": "If you think you can manage the cold easily, congratulations. You are about to become a human popsicle before sunrise.",
-    "subtitle_script": "Cold is not your friend."
-  },
-  {
-    "scene_id": 4,
-    "image_prompt": "Smartphone showing no signal and low battery in a dark room, realistic survival mood",
-    "audio_script": "First rule of survival. Stop checking your phone every five seconds. It will not magically bring the power back.",
-    "subtitle_script": "Stop checking your phone."
-  },
-  {
-    "scene_id": 5,
-    "image_prompt": "Person putting phone on airplane mode, candle lighting the room, survival atmosphere",
-    "audio_script": "Switch your phone to low power mode or airplane mode. Your battery is now more valuable than gold.",
-    "subtitle_script": "Save your phone battery."
-  }
-]

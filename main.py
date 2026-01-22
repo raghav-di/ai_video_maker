@@ -17,6 +17,9 @@ SCENES_FILE = Path("assets/metadata/scenes.json")
 def main():
     print("🎬 Story2Video Pipeline Started")
 
+    res = input("Enter the aspect ratio (option1- 16:9 or option2- 9:16): ")
+    lang = input("Enter the language (option1- Hindi or option2- English): ")
+
     # Load story
     if STORY_FILE.exists():
         story_text = STORY_FILE.read_text(encoding="utf-8")
@@ -29,7 +32,7 @@ def main():
 
     # Generate TTS (audio-first)
     print("🎙️ Generating Hindi audio per scene...")
-    full_audio_path, scene_durations = generate_scene_audios(scenes)
+    full_audio_path, scene_durations = generate_scene_audios(scenes, lang, "ai_video_maker/assets/audio/speaker.wav")
 
     # Save durations into metadata (optional but useful)
     for scene, duration in zip(scenes, scene_durations):
@@ -40,7 +43,7 @@ def main():
 
     # Generate subtitles
     print("💬 Generating subtitles...")
-    generate_srt()
+    generate_srt(scene_durations)
 
     # Generate images
     print("🎨 Generating images...")
@@ -48,7 +51,7 @@ def main():
 
     # Build final video
     print("🎥 Building final video...")
-    build_video(scene_durations, full_audio_path, "ai_video_maker/assets/audio/ambience.wav")
+    build_video(scene_durations, res, full_audio_path, "ai_video_maker/assets/audio/ambience.wav")
 
     print("✅ Pipeline completed successfully!")
 

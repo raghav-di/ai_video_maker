@@ -17,8 +17,8 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # ---------- CORE FUNCTION ----------
 def generate_scene_audios(
     scenes: List[Dict],
-    speaker_wav: str = None,
-    language: str = "hi"
+    language: str,
+    speaker_wav: str
 ) -> Tuple[str, List[float]]:
     """
     Generates per-scene audio, measures durations,
@@ -44,8 +44,8 @@ def generate_scene_audios(
         tts.tts_to_file(
             text=text,
             file_path=str(out_path),
-            speaker_wav="ai_video_maker/assets/audio/speaker.wav",
-            language='hi'
+            speaker_wav=speaker_wav,
+            language=language
         )
 
         # Measure duration
@@ -86,7 +86,9 @@ if __name__ == "__main__":
     with open("assets/metadata/scenes.json", "r", encoding="utf-8") as f:
         scenes = json.load(f)
 
-    full_audio, durations = generate_scene_audios(scenes)
+    language = input("Enter the language (option1- Hindi or option2- English): ")
+
+    full_audio, durations = generate_scene_audios(scenes, language)
 
     print("Full audio:", full_audio)
     print("Scene durations:", durations)
