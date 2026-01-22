@@ -32,7 +32,7 @@ from typing import List, Dict
 # def build_prompt(hindi_story: str) -> str:
 #     return f"{SYSTEM_RULES}\n\nHindi story:\n{hindi_story}\n\nOutput:"
 
-import re
+# import re
 
 # def extract_last_json_array(text: str) -> str:
 #     # Find the last [...] block to guard against preface/epilogue
@@ -133,7 +133,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 #         return {"error": "Failed to parse response", "raw_response": response_text}
 
 # ---------- MAIN FUNCTION ----------
-def parse_story_to_scenes(story_text: str) -> List[Dict]:
+def parse_story_to_scenes(story_text: json) -> List[Dict]:
     """
     Converts Hindi story text into structured scene JSON.
     """
