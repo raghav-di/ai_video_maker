@@ -13,17 +13,19 @@ RESULT_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_VIDEO = RESULT_DIR / "final_video.mp4"
 SUBS_PATH = "assets/metadata/subs.srt"
 
-FPS = 30
-RESOLUTION = "1080x1920"   # change to 1920x1080 later if needed
+FPS = 30   # change to 1920x1080 later if needed
 TRANSITION_DURATION = 0.5  # seconds
 
 
 # ---------- CORE FUNCTION ----------
 def build_video(
     scene_durations: List[float],
+    resolution: str,
     narration_audio: str,
     ambience_audio: str
 ):
+
+    RESOLUTION = "1080x1920" if resolution == "1" else "1920x1080"
     image_files = sorted(IMAGE_DIR.glob("scene_*.png"))
     assert len(image_files) == len(scene_durations), \
         "Mismatch between images and scene durations"
