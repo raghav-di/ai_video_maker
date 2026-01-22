@@ -21,7 +21,7 @@ def main():
     if STORY_FILE.exists():
         story_text = STORY_FILE.read_text(encoding="utf-8")
     else:
-        story_text = input("Enter Hindi story:\n")
+        story_text = input("Enter Hindi story: ")
 
     # Story → Scenes
     print("🧠 Parsing story into scenes...")
