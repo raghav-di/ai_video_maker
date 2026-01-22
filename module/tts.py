@@ -37,7 +37,7 @@ def generate_scene_audios(
 
     for scene in scenes:
         scene_id = scene["scene_id"]
-        text = scene["audio_script_hi"]
+        text = scene["audio_script"]
 
         out_path = AUDIO_DIR / f"scene_{scene_id:02d}.wav"
 

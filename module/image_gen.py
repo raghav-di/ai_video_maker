@@ -41,7 +41,7 @@ def generate_scene_images(
 
     for scene in scenes:
         scene_id = scene["scene_id"]
-        prompt = scene["image_prompt_en"]
+        prompt = scene["image_prompt"]
 
         out_path = IMAGE_DIR / f"scene_{scene_id:02d}.png"
 

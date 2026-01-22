@@ -54,7 +54,7 @@ def generate_srt():
     current_time = 0.0
 
     for scene in scenes:
-        text = scene["subtitle_script_hi"]
+        text = scene["subtitle_script"]
         duration = scene["duration"]
 
         lines = split_text_to_lines(text, MAX_CHARS_PER_LINE)
