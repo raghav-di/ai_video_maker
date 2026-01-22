@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
     language = input("Enter the language (option1- Hindi or option2- English): ")
 
-    full_audio, durations = generate_scene_audios(scenes, language)
+    full_audio, durations = generate_scene_audios(scenes, language, "ai_video_maker/assets/audio/speaker.wav")
 
     print("Full audio:", full_audio)
     print("Scene durations:", durations)
