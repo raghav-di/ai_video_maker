@@ -25,5 +25,5 @@ dependencies = [
     "google-generativeai==0.8.6",
     "subtitle==2.3"
 ]
-[tool.pip] 
+[tool.uv.pip] 
 index-url = "https://download.pytorch.org/whl/cu126"

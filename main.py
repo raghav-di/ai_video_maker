@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import multiprocessing
 
 from module.story_parser import parse_story_to_scenes
 from module.tts import generate_scene_audios
@@ -19,6 +20,7 @@ def main():
 
     res = input("Enter the aspect ratio (option1- 16:9 or option2- 9:16): ")
     lang = input("Enter the language (option1- Hindi or option2- English): ")
+    bg_music = input("Enter background music preference(from 0.0 to 1.0): ")
 
     # Load story
     if STORY_FILE.exists():
@@ -51,7 +53,7 @@ def main():
 
     # Build final video
     print("🎥 Building final video...")
-    build_video(scene_durations, res, full_audio_path, "ai_video_maker/assets/audio/ambience.wav")
+    build_video(scene_durations, res, full_audio_path, "ai_video_maker/assets/audio/ambience.wav", bg_music)
 
     print("✅ Pipeline completed successfully!")
 

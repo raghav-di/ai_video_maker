@@ -22,7 +22,8 @@ def build_video(
     scene_durations: List[float],
     resolution: str,
     narration_audio: str,
-    ambience_audio: str
+    ambience_audio: str,
+    bg_music: str
 ):
 
     RESOLUTION = "1080x1920" if resolution == "1" else "1920x1080"
@@ -69,7 +70,7 @@ def build_video(
     # Audio filters: narration + ambience loop
     audio_filter = (
         f"[{len(image_files)}:0]volume=1.0[narr];"
-        f"[{len(image_files)+1}:0]volume=0.2,aloop=loop=-1:size=2e+09[amb];"
+        f"[{len(image_files)+1}:0]volume={bg_music},aloop=loop=-1:size=2e+09[amb];"
         f"[narr][amb]amix=inputs=2:duration=shortest[aout]"
     )
 
