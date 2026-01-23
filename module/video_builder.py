@@ -1,8 +1,6 @@
 import subprocess
 from pathlib import Path
 from typing import List
-# import random
-
 
 # ---------- CONFIG ----------
 IMAGE_DIR = Path("assets/images")
@@ -13,7 +11,7 @@ RESULT_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_VIDEO = RESULT_DIR / "final_video.mp4"
 SUBS_PATH = "assets/metadata/subs.srt"
 
-FPS = 30   # change to 1920x1080 later if needed
+FPS = 12
 TRANSITION_DURATION = 0.5  # seconds
 
 
@@ -33,26 +31,7 @@ def build_video(
 
     inputs = []
     scene_filters = []
-    # Define some sensible focus points for variation
-    focus_points = [
-        ("iw/4", "ih/4"),       # top-left
-        ("iw/2", "ih/2"),       # center
-        ("3*iw/4", "ih/2"),     # right-center
-        ("iw/2", "3*ih/4"),     # bottom-center
-    ]
 
-    # for idx, (img, duration) in enumerate(zip(image_files, scene_durations)):
-    #     inputs.extend([
-    #         "-loop", "1",
-    #         "-t", str(duration),
-    #         "-i", str(img)
-    #     ])
-    #     frames = int(duration * FPS)
-    #     x_expr, y_expr = random.choice(focus_points)
-
-    #     scene_filters.append(
-    #         f"[{idx}:v]zoompan=z='zoom+0.001':x='{x_expr}':y='{y_expr}':d={frames}:s={RESOLUTION}:fps={FPS},format=yuv420p,setsar=1[v{idx}]"
-    #     )
     for idx, (img, duration) in enumerate(zip(image_files, scene_durations)):
         inputs.extend([
             "-loop", "1",

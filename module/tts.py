@@ -11,7 +11,7 @@ AUDIO_DIR = Path("assets/audio")
 AUDIO_DIR.mkdir(parents=True, exist_ok=True)
 
 MODEL_NAME = "tts_models/multilingual/multi-dataset/xtts_v2"
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+DEVICE = "cpu"
 
 
 # ---------- CORE FUNCTION ----------
@@ -58,9 +58,8 @@ def generate_scene_audios(
     full_audio_path = AUDIO_DIR / "full_story.wav"
     _concatenate_audios(scene_audio_paths, full_audio_path)
 
-    # Free GPU memory
+    # Free memory
     del tts
-    torch.cuda.empty_cache()
 
     if return_dict is not None:
         return_dict["result"] = (str(full_audio_path), scene_durations)
