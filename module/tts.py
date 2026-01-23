@@ -18,7 +18,8 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 def generate_scene_audios(
     scenes: List[Dict],
     language: str,
-    speaker_wav: str
+    speaker_wav: str,
+    return_dict = None
 ) -> Tuple[str, List[float]]:
     """
     Generates per-scene audio, measures durations,
@@ -60,6 +61,9 @@ def generate_scene_audios(
     # Free GPU memory
     del tts
     torch.cuda.empty_cache()
+
+    if return_dict is not None:
+        return_dict["result"] = (str(full_audio_path), scene_durations)
 
     return str(full_audio_path), scene_durations
 

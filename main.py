@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from multiprocessing import Process, Manager
 
 from module.story_parser import parse_story_to_scenes
 from module.tts import generate_scene_audios
@@ -31,24 +32,32 @@ def main():
     print("🧠 Parsing story into scenes...")
     scenes = parse_story_to_scenes(story_text)
 
+    # Generate images
+    print("🎨 Generating images...")
+    p1 = Process(target=generate_scene_images, args=(scenes,))
+    p1.start()
+
     # Generate TTS (audio-first)
     print("🎙️ Generating Hindi audio per scene...")
-    full_audio_path, scene_durations = generate_scene_audios(scenes, lang, "ai_video_maker/assets/audio/speaker.wav")
+    with Manager() as manager:
+        return_dict = manager.dict()
+        p2 = Process(target=generate_scene_audios,
+                    args=(scenes, lang, "ai_video_maker/assets/audio/speaker.wav", return_dict))
+        p2.start()
+        p1.join()
+        p2.join()
+        full_audio_path, scene_durations = return_dict["result"]
 
-    # Save durations into metadata (optional but useful)
-    for scene, duration in zip(scenes, scene_durations):
-        scene["duration"] = duration
+        # Save durations into metadata (optional but useful)
+        for scene, duration in zip(scenes, scene_durations):
+            scene["duration"] = duration
 
-    with open(SCENES_FILE, "w", encoding="utf-8") as f:
-        json.dump(scenes, f, ensure_ascii=False, indent=2)
+        with open(SCENES_FILE, "w", encoding="utf-8") as f:
+            json.dump(scenes, f, ensure_ascii=False, indent=2)
 
     # Generate subtitles
     print("💬 Generating subtitles...")
     generate_srt()
-
-    # Generate images
-    print("🎨 Generating images...")
-    generate_scene_images(scenes)
 
     # Build final video
     print("🎥 Building final video...")
