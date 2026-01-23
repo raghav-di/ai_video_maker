@@ -1,6 +1,5 @@
 import json
 from pathlib import Path
-import multiprocessing
 
 from module.story_parser import parse_story_to_scenes
 from module.tts import generate_scene_audios
