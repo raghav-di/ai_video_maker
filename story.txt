@@ -1,0 +1,6 @@
+[{
+    "scene_id": 1,
+    "image_prompt": "Sunlight breaking through clouds over city",
+    "audio_script": "Because surviving is not just about staying alive. It is about enduring with dignity.",
+    "subtitle_script": "Endure."
+  }]
