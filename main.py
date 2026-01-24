@@ -1,4 +1,5 @@
 import json
+import multiprocessing
 from pathlib import Path
 from multiprocessing import Process, Manager
 
@@ -68,4 +69,5 @@ def main():
 
 # ---------- ENTRY ----------
 if __name__ == "__main__":
+    multiprocessing.set_start_method("spawn", force=True)
     main()
