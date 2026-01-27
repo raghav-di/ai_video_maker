@@ -8,12 +8,12 @@ from module.tts import generate_scene_audios
 from module.image_gen import generate_scene_images
 from module.video_builder import build_video
 from module.subtitle import generate_srt
+from module.models import load_model
 
 
 # ---------- PATHS ----------
 STORY_FILE = Path("ai_video_maker/story.txt")
 SCENES_FILE = Path("assets/metadata/scenes.json")
-
 
 # ---------- MAIN PIPELINE ----------
 def main():
@@ -40,6 +40,7 @@ def main():
 
     # Generate TTS (audio-first)
     print("🎙️ Generating Hindi audio per scene...")
+    load_model()
     with Manager() as manager:
         return_dict = manager.dict()
         p2 = Process(target=generate_scene_audios,

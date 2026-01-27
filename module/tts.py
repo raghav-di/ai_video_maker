@@ -1,18 +1,15 @@
-import torch
 import soundfile as sf
 import librosa
 from pathlib import Path
 from typing import List, Dict, Tuple
-from TTS.api import TTS
 import numpy as np
 
-# ---------- CONFIG ----------
+from models import tts
+
+
+# ---------- PATHS ----------
 AUDIO_DIR = Path("assets/audio")
 AUDIO_DIR.mkdir(parents=True, exist_ok=True)
-
-MODEL_NAME = "tts_models/multilingual/multi-dataset/xtts_v2"
-DEVICE = "cpu"
-
 
 # ---------- CORE FUNCTION ----------
 def generate_scene_audios(
@@ -29,9 +26,6 @@ def generate_scene_audios(
         full_audio_path (str)
         scene_durations (List[float])
     """
-
-    # Load TTS model
-    tts = TTS(MODEL_NAME).to(DEVICE)
 
     scene_audio_paths = []
     scene_durations = []
