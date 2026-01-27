@@ -16,7 +16,7 @@ def generate_scene_audios(
     scenes: List[Dict],
     language: str,
     speaker_wav: str,
-    return_dict = None
+    queue = None
 ) -> Tuple[str, List[float]]:
     """
     Generates per-scene audio, measures durations,
@@ -55,8 +55,8 @@ def generate_scene_audios(
     # Free memory
     del tts
 
-    if return_dict is not None:
-        return_dict["result"] = (str(full_audio_path), scene_durations)
+    if queue is not None:
+        queue.put((full_audio_path, scene_durations))
 
     return str(full_audio_path), scene_durations
 
