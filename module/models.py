@@ -20,11 +20,9 @@ DEFAULT_NEGATIVE_PROMPT = (
 
 def load_models():
     # Load TTS model
-    global tts
     tts = TTS(MODEL_NAME).to(DEVICE)
 
     # Load SDXL
-    global pipe
     pipe = StableDiffusionXLPipeline.from_pretrained(
         MODEL_ID,
         torch_dtype=torch.float16,
@@ -33,6 +31,10 @@ def load_models():
 
     pipe.enable_attention_slicing()
     pipe.enable_vae_slicing()
+
+    return tts, pipe
+
+tts, pipe = load_models()
 
 def del_models():
     global tts
