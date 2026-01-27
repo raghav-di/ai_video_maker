@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Dict, Tuple
 import numpy as np
 
-from models import tts
+from module.models import tts
 
 
 # ---------- PATHS ----------
@@ -53,10 +53,10 @@ def generate_scene_audios(
     _concatenate_audios(scene_audio_paths, full_audio_path)
 
     # Free memory
-    del tts
+    # del tts
 
-    if queue is not None:
-        queue.put((full_audio_path, scene_durations))
+    # if queue is not None:
+    #     queue.put((full_audio_path, scene_durations))
 
     return str(full_audio_path), scene_durations
 

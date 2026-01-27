@@ -1,14 +1,12 @@
 import json
-import multiprocessing
 from pathlib import Path
-from multiprocessing import Process, Queue
 
 from module.story_parser import parse_story_to_scenes
 from module.tts import generate_scene_audios
 from module.image_gen import generate_scene_images
 from module.video_builder import build_video
 from module.subtitle import generate_srt
-from module.models import load_model
+from module.models import load_models, del_models
 
 
 # ---------- PATHS ----------
@@ -35,21 +33,12 @@ def main():
 
     # Generate images
     print("🎨 Generating images...")
-    p1 = Process(target=generate_scene_images, args=(scenes,))
-    p1.start()
+    generate_scene_images(scenes)
 
     # Generate TTS (audio-first)
     print("🎙️ Generating Hindi audio per scene...")
-    load_model()
-    queue = Queue()
-    p2 = Process(target=generate_scene_audios,
-                args=(scenes, lang, "ai_video_maker/assets/audio/speaker.wav", queue))
-    p2.start()
-    p1.join()
-    p2.join()
-    full_audio_path, scene_durations = queue.get()
+    full_audio_path, scene_durations = generate_scene_audios(scenes, lang, "ai_video_maker/assets/audio/speaker.wav")
 
-    # Save durations into metadata (optional but useful)
     for scene, duration in zip(scenes, scene_durations):
         scene["duration"] = duration
 
@@ -69,5 +58,9 @@ def main():
 
 # ---------- ENTRY ----------
 if __name__ == "__main__":
-    multiprocessing.set_start_method("spawn", force=True)
-    main()
+    load_models()
+    run = True
+    while run:
+        if input("Do you want to create a new video? (y/n): ").lower() == 'y':
+            main()
+    del_models()
