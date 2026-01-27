@@ -1,22 +1,24 @@
+import torch
 import soundfile as sf
 import librosa
 from pathlib import Path
 from typing import List, Dict, Tuple
+from TTS.api import TTS
 import numpy as np
 
-from module.models import tts
-
-
-# ---------- PATHS ----------
+# ---------- CONFIG ----------
 AUDIO_DIR = Path("assets/audio")
 AUDIO_DIR.mkdir(parents=True, exist_ok=True)
+
+MODEL_NAME = "tts_models/multilingual/multi-dataset/xtts_v2"
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # ---------- CORE FUNCTION ----------
 def generate_scene_audios(
     scenes: List[Dict],
     language: str,
     speaker_wav: str,
-    queue = None
+    return_dict = None
 ) -> Tuple[str, List[float]]:
     """
     Generates per-scene audio, measures durations,
@@ -26,6 +28,9 @@ def generate_scene_audios(
         full_audio_path (str)
         scene_durations (List[float])
     """
+
+    # Load TTS model
+    tts = TTS(MODEL_NAME).to(DEVICE)
 
     scene_audio_paths = []
     scene_durations = []
@@ -53,10 +58,10 @@ def generate_scene_audios(
     _concatenate_audios(scene_audio_paths, full_audio_path)
 
     # Free memory
-    # del tts
+    del tts
 
-    # if queue is not None:
-    #     queue.put((full_audio_path, scene_durations))
+    if return_dict is not None:
+        return_dict["result"] = (str(full_audio_path), scene_durations)
 
     return str(full_audio_path), scene_durations
 

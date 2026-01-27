@@ -1,11 +1,19 @@
+import torch
+from diffusers import StableDiffusionXLPipeline
 from pathlib import Path
 from typing import List, Dict
-
-from module.models import pipe, DEFAULT_NEGATIVE_PROMPT
 
 # ---------- CONFIG ----------
 IMAGE_DIR = Path("assets/images")
 IMAGE_DIR.mkdir(parents=True, exist_ok=True)
+
+MODEL_ID = "stabilityai/stable-diffusion-xl-base-1.0"
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
+DEFAULT_NEGATIVE_PROMPT = (
+    "low quality, blurry, distorted, bad anatomy, "
+    "extra limbs, extra fingers, watermark, text"
+)
 
 # ---------- CORE FUNCTION ----------
 def generate_scene_images(
@@ -19,6 +27,16 @@ def generate_scene_images(
     Generates one image per scene using SDXL.
     Images are saved to assets/images/.
     """
+
+    # Load SDXL
+    pipe = StableDiffusionXLPipeline.from_pretrained(
+        MODEL_ID,
+        torch_dtype=torch.float16,
+        use_safetensors=True
+    ).to(DEVICE)
+
+    pipe.enable_attention_slicing()
+    pipe.enable_vae_slicing()
 
     for scene in scenes:
         scene_id = scene["scene_id"]
@@ -38,6 +56,10 @@ def generate_scene_images(
         ).images[0]
 
         image.save(out_path)
+
+    # Free GPU memory
+    del pipe
+    torch.cuda.empty_cache()
 
 
 # ---------- CLI TEST ----------

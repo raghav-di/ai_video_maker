@@ -6,7 +6,7 @@ from module.tts import generate_scene_audios
 from module.image_gen import generate_scene_images
 from module.video_builder import build_video
 from module.subtitle import generate_srt
-from module.models import load_models, del_models
+# from module.models import load_models, del_models
 
 
 # ---------- PATHS ----------
@@ -58,9 +58,9 @@ def main():
 
 # ---------- ENTRY ----------
 if __name__ == "__main__":
-    load_models()
+    # load_models()
     run = True
     while run:
         if input("Do you want to create a new video? (y/n): ").lower() == 'y':
             main()
-    del_models()
+    # del_models()
