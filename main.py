@@ -31,10 +31,6 @@ def main():
     print("🧠 Parsing story into scenes...")
     scenes = parse_story_to_scenes(story_text)
 
-    # Generate images
-    print("🎨 Generating images...")
-    generate_scene_images(scenes)
-
     # Generate TTS (audio-first)
     print("🎙️ Generating Hindi audio per scene...")
     full_audio_path, scene_durations = generate_scene_audios(scenes, lang, "ai_video_maker/assets/audio/speaker.wav")
@@ -44,6 +40,10 @@ def main():
 
     with open(SCENES_FILE, "w", encoding="utf-8") as f:
         json.dump(scenes, f, ensure_ascii=False, indent=2)
+
+    # Generate images
+    print("🎨 Generating images...")
+    generate_scene_images(scenes)
 
     # Generate subtitles
     print("💬 Generating subtitles...")
