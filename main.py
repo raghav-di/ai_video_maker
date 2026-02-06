@@ -51,7 +51,7 @@ def main():
 
     # Build final video
     print("🎥 Building final video...")
-    build_video(scene_durations, res, full_audio_path, "ai_video_maker/assets/audio/ambience.wav", bg_music)
+    build_video(scene_durations, res, full_audio_path, "ai_video_maker/assets/audio/ambience.wav")
 
     print("✅ Pipeline completed successfully!")
 

@@ -92,5 +92,6 @@ if __name__ == "__main__":
     narration_audio = AUDIO_DIR / "full_story.wav"
     ambience_audio = "ai_video_maker/assets/audio/ambience.wav"
     res = input("Enter the aspect ratio (option1- 16:9 or option2- 9:16): ")
+    bg_music = input("Enter background music preference(from 0.0 to 1.0): ")
 
-    build_video(durations, res, str(narration_audio), str(ambience_audio))
+    build_video(durations, res, str(narration_audio), str(ambience_audio), bg_music)
