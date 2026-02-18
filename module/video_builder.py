@@ -23,6 +23,11 @@ def build_video(
     ambience_audio: str,
     bg_music: str
 ):
+    
+    if Path("assets").exists():
+        Path("assets").rmdir()
+        Path("assets").mkdir()
+
 
     RESOLUTION = "1080x1920" if resolution == "1" else "1920x1080"
     image_files = sorted(IMAGE_DIR.glob("scene_*.png"))
