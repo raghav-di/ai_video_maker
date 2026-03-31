@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import shutil
 
 from module.story_parser import parse_story_to_scenes
 from module.tts import generate_scene_audios
@@ -12,9 +13,9 @@ from module.subtitle import generate_srt
 # ---------- PATHS ----------
 STORY_FILE = Path("ai_video_maker/story.txt")
 SCENES_FILE = Path("assets/metadata/scenes.json")
-
 # ---------- MAIN PIPELINE ----------
 def main():
+
     print("🎬 Story2Video Pipeline Started")
 
     res = input("Enter the aspect ratio (option1- 16:9 or option2- 9:16): ")
@@ -61,6 +62,12 @@ if __name__ == "__main__":
     # load_models()
     run = True
     while run:
+
+        if Path("assets").exists():
+            shutil.rmtree('assets')
         if input("Do you want to create a new video? (y/n): ").lower() == 'y':
+            Path("assets").mkdir()
+            Path("assets/metadata").mkdir()
+            SCENES_FILE
             main()
     # del_models()

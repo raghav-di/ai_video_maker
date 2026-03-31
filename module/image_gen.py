@@ -4,8 +4,6 @@ from pathlib import Path
 from typing import List, Dict
 
 # ---------- CONFIG ----------
-IMAGE_DIR = Path("assets/images")
-IMAGE_DIR.mkdir(parents=True, exist_ok=True)
 
 MODEL_ID = "stabilityai/stable-diffusion-xl-base-1.0"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -15,6 +13,7 @@ DEFAULT_NEGATIVE_PROMPT = (
     "extra limbs, extra fingers, watermark, text"
 )
 
+IMAGE_DIR = Path("assets/images")
 # ---------- CORE FUNCTION ----------
 def generate_scene_images(
     scenes: List[Dict],
@@ -28,6 +27,8 @@ def generate_scene_images(
     Images are saved to assets/images/.
     """
 
+    IMAGE_DIR.mkdir(parents=True, exist_ok=True)
+    
     # Load SDXL
     pipe = StableDiffusionXLPipeline.from_pretrained(
         MODEL_ID,
