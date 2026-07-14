@@ -261,10 +261,6 @@ You can help by:
 * Improving subtitle generation
 * Suggesting new features
 
-If you're new to open source, look for issues labeled:
-```
-good first issue
-```
 Please open an Issue before submitting large feature requests.
 
 ---
