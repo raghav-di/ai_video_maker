@@ -20,14 +20,11 @@ def generate_scene_audios(
     speaker_wav: str,
     return_dict = None
 ) -> Tuple[str, List[float]]:
-    """
-    Generates per-scene audio, measures durations,
-    concatenates into a full story audio.
-
-    Returns:
-        full_audio_path (str)
-        scene_durations (List[float])
-    """
+    # Generates per-scene audio, measures durations,
+    # concatenates into a full story audio.
+    # Returns:
+    #     full_audio_path (str)
+    #     scene_durations (List[float])
 
     # Load TTS model
     tts = TTS(MODEL_NAME).to(DEVICE)

@@ -12,7 +12,7 @@ OUTPUT_VIDEO = RESULT_DIR / "final_video.mp4"
 SUBS_PATH = "assets/metadata/subs.srt"
 
 FPS = 12
-TRANSITION_DURATION = 0.5  # seconds
+TRANSITION_DURATION = 0.5
 
 
 # ---------- CORE FUNCTION ----------

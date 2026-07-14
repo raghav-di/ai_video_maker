@@ -32,7 +32,7 @@ def main():
     print("🧠 Parsing story into scenes...")
     scenes = parse_story_to_scenes(story_text)
 
-    # Generate TTS (audio-first)
+    # Generate TTS
     print("🎙️ Generating Hindi audio per scene...")
     full_audio_path, scene_durations = generate_scene_audios(scenes, lang, "ai_video_maker/assets/audio/speaker.wav")
 
@@ -59,7 +59,6 @@ def main():
 
 # ---------- ENTRY ----------
 if __name__ == "__main__":
-    # load_models()
     run = True
     while run:
 
@@ -70,4 +69,3 @@ if __name__ == "__main__":
             Path("assets/metadata").mkdir()
             SCENES_FILE
             main()
-    # del_models()
